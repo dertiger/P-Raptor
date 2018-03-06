@@ -200,15 +200,6 @@
 	<storageModule moduleId="cdtBuildSystem" version="4.0.0">
 		<project id="INTRO_Remote_Master.ilg.gnuarmeclipse.managedbuild.cross.target.elf.410582038" name="Executable" projectType="ilg.gnuarmeclipse.managedbuild.cross.target.elf"/>
 	</storageModule>
-	<storageModule moduleId="scannerConfiguration">
-		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		<scannerConfigBuildInfo instanceId="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380;ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380.;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1359487904;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.2042000291">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-		<scannerConfigBuildInfo instanceId="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380;ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380.;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.618775532;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2117394771">
-			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
-		</scannerConfigBuildInfo>
-	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.core.pathentry"/>
 	<storageModule moduleId="refreshScope" versionNumber="2">
 		<configuration configurationName="Debug">
@@ -216,4 +207,13 @@
 		</configuration>
 	</storageModule>
 	<storageModule moduleId="org.eclipse.cdt.make.core.buildtargets"/>
+	<storageModule moduleId="scannerConfiguration">
+		<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		<scannerConfigBuildInfo instanceId="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380;ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380.;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.618775532;ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input.2117394771">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+		<scannerConfigBuildInfo instanceId="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380;ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug.1976129380.;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.1359487904;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input.2042000291">
+			<autodiscovery enabled="true" problemReportingEnabled="true" selectedProfileId=""/>
+		</scannerConfigBuildInfo>
+	</storageModule>
 </cproject>

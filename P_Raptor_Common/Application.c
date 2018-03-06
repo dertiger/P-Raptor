@@ -184,6 +184,16 @@ void APP_Start(void) {
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
+	  LED1_Put((cntr%10)=0);
+	  cntr++;
+
+	  WAIT1_Waitms(100);
+	  LED2_ON();
+	  WAIT1_Waitms(100);
+	  LED2_OFF();
+	  LED2_Neg();
+	  WAIT1_Waitms(100);
+
   }
 }
 
