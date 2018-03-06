@@ -180,20 +180,29 @@ static void APP_AdoptToHardware(void) {
 }
 
 void APP_Start(void) {
+
+	int cntr=0;
+
   PL_Init();
   APP_AdoptToHardware();
   __asm volatile("cpsie i"); /* enable interrupts */
   for(;;) {
-	  LED1_Put((cntr%10)=0);
+	  LED1_Put((cntr%10)==0);
 	  cntr++;
 
 	  WAIT1_Waitms(100);
-	  LED2_ON();
+	  LED2_On();
 	  WAIT1_Waitms(100);
-	  LED2_OFF();
+	  LED2_Off();
 	  LED2_Neg();
 	  WAIT1_Waitms(100);
+#if PL_CONFIG_HAS_LED&& PL_CONFIG_NOF_LED>=3
+	  LED3_On();
+	  WAIT1_Waitms(100);
+	  LED3_Off();
+#endif
 
+	  __asm("nop");
   }
 }
 
