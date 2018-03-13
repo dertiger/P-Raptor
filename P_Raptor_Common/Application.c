@@ -185,7 +185,15 @@ void APP_Start(void) {
 
   PL_Init();
   APP_AdoptToHardware();
+
   __asm volatile("cpsie i"); /* enable interrupts */
+
+  for(;;){
+	  EVNT_HandleEvent(APP_EventHandler,TRUE);
+
+
+  }
+
   for(;;) {
 	  LED1_Put((cntr%10)==0);
 	  cntr++;
