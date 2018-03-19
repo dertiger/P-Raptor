@@ -90,7 +90,7 @@ void APP_EventHandler(EVNT_Handle event) {
       LED1_Off();
     }
   case EVNT_LED_HEARTBEAT:
-    LED2_Neg();
+    LED1_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
@@ -190,8 +190,6 @@ void APP_Start(void) {
 
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
-
-
   }
 
   for(;;) {
