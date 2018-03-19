@@ -90,12 +90,17 @@ void APP_EventHandler(EVNT_Handle event) {
       LED1_Off();
     }
   case EVNT_LED_HEARTBEAT:
-    LED1_Neg();
+    //LED1_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
+	  LED1_Off();
     BtnMsg(1, "pressed");
      break;
+     case EVNT_SW2_PRESSED:
+   	  LED1_On();
+       BtnMsg(2, "pressed");
+        break;
 #endif
     default:
       break;
@@ -190,6 +195,7 @@ void APP_Start(void) {
 
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
+	  KEY_Scan();
   }
 
   for(;;) {
