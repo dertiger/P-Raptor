@@ -223,6 +223,7 @@ void APP_Start(void) {
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
 	  KEY_Scan();
+	  WAIT1_Waitms(100);
   }
 
   for(;;) {
