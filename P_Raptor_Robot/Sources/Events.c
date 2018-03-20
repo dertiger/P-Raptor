@@ -32,6 +32,9 @@
 #if PL_CONFIG_HAS_TIMER
 #include "Timer.h"
 #endif
+#if PL_CONFIG_HAS_KEYS
+#include "Keys.h"
+#endif
 
 #ifdef __cplusplus
 extern "C" {
