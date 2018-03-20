@@ -95,6 +95,9 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
 	  BtnMsg(1, "pressed");
+#if PL_CONFIG_HAS_BUZZER
+	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
+#endif
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
@@ -215,7 +218,6 @@ void APP_Start(void) {
 	int cntr=0;
 
   PL_Init();
-  SHELL_Init();
   APP_AdoptToHardware();
 
   __asm volatile("cpsie i"); /* enable interrupts */
@@ -223,7 +225,7 @@ void APP_Start(void) {
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
 	  KEY_Scan();
-	  WAIT1_Waitms(100);
+	  //WAIT1_Waitms(100);
   }
 
   for(;;) {
