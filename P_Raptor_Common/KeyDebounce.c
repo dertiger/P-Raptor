@@ -221,7 +221,14 @@ static DBNC_FSMData KEYDBNC_FSMdata = {
 };
 
 void KEYDBNC_Process(void) {
-  /** \todo check/call DBNC_Process(&KEYDBNC_FSMdata);
+	static bool smrunning=0;
+	if(!smrunning){
+		smrunning=1;
+		//KEYDBNC_FSMdata->scanValue = KEYDBNC_GetKeys();
+		DBNC_Process(&KEYDBNC_FSMdata);
+	}
+
+	/** \todo check/call DBNC_Process(&KEYDBNC_FSMdata);
    * But be careful: only if we are not debouncing, and if we have a key press if we are polling.
    * And you will need to disable the keyboard interrupts too!
    */

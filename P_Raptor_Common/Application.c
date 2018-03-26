@@ -97,6 +97,7 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_HAS_BUZZER
 	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
 #endif
+
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=2
@@ -223,7 +224,8 @@ void APP_Start(void) {
 
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
-	  KEY_Scan();
+	  //KEY_Scan();
+	  KEYDBNC_Process();
   }
 
   for(;;) {
