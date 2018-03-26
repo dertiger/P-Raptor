@@ -94,6 +94,13 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
 	  BtnMsg(1, "pressed");
+	  break;
+  case EVNT_SW1_LPRESSED:
+  	  BtnMsg(1, "Long pressed");
+  	  break;
+case EVNT_SW1_RELEASED:
+  	  BtnMsg(1, "release");
+  	  break;
 #if PL_CONFIG_HAS_BUZZER
 	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
 #endif
@@ -103,6 +110,12 @@ void APP_EventHandler(EVNT_Handle event) {
 #if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
 	  BtnMsg(2, "pressed");
+	  break;
+  case EVNT_SW2_LPRESSED:
+	  BtnMsg(2, "Long pressed");
+	  break;
+  case EVNT_SW2_RELEASED:
+	  BtnMsg(2, "release");
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=3

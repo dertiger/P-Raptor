@@ -13,7 +13,10 @@
 #include "Debounce.h"
 #include "Trigger.h"
 #include "Event.h"
-#include "FRTOS1.h"
+//#include "FRTOS1.h"
+
+
+static bool smrunning=0;
 
 /*!
  * \brief Returns the state of the keys. This directly reflects the value of the port
@@ -200,6 +203,7 @@ static void KEYDBNC_OnDebounceEvent(DBNC_EventKinds event, DBNC_KeySet keys) {
     #if PL_CONFIG_HAS_KBI
       KEY_EnableInterrupts();
     #endif
+      smrunning = 0;
       break;
   } /* switch */
 }
@@ -221,11 +225,12 @@ static DBNC_FSMData KEYDBNC_FSMdata = {
 };
 
 void KEYDBNC_Process(void) {
-	static bool smrunning=0;
 	if(!smrunning){
-		smrunning=1;
-		//KEYDBNC_FSMdata->scanValue = KEYDBNC_GetKeys();
-		DBNC_Process(&KEYDBNC_FSMdata);
+		if(KEYDBNC_GetKeys()){
+			smrunning=1;
+			//KEYDBNC_FSMdata->scanValue = KEYDBNC_GetKeys();
+			DBNC_Process(&KEYDBNC_FSMdata);
+		}
 	}
 
 	/** \todo check/call DBNC_Process(&KEYDBNC_FSMdata);
