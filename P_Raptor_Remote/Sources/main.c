@@ -30,6 +30,8 @@
 /* Including needed modules to compile this module/procedure */
 #include "Cpu.h"
 #include "Events.h"
+#include "FRTOS1.h"
+#include "RTOSCNTRLDD1.h"
 #include "MCUC1.h"
 #include "LEDPin1.h"
 #include "BitIoLdd17.h"
@@ -69,6 +71,7 @@
 #include "Tx1.h"
 #include "Rx1.h"
 #include "TmDt1.h"
+#include "SYS1.h"
 #include "TMOUT1.h"
 #include "HF1.h"
 #include "CS1.h"
@@ -90,7 +93,6 @@ int main(void)
   /*** Processor Expert internal initialization. DON'T REMOVE THIS CODE!!! ***/
   PE_low_level_init();
   /*** End of Processor Expert internal initialization.                    ***/
-
 
   APP_Start();
 
