@@ -13,12 +13,15 @@
 
 void RTOS_Init(void) {
  /*! \todo Create tasks here */
-	BaseType_t res;
 	xTaskHandle taskHndl;
-	res = xTaskCreate(BlingTask, "Blingy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl);
-	if (res!=pdPASS)
-	{
-#// ERROR handling for tasks to be implemented
+	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+		for(;;){}	// ERROR handling for tasks to be implemented
+	}
+	if(xTaskCreate(BlingTask, "Blingy2", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+		for(;;){}	// ERROR handling for tasks to be implemented
+	}
+	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+		for(;;){}	// ERROR handling for tasks to be implemented
 	}
 }
 
@@ -32,6 +35,14 @@ static void BlingTask (void *pvParameters)
 	for(;;){
 		LED1_Neg();
 		vTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
+	}
+}
+
+static void Busy (void *param)
+{
+	for(;;){
+		LED1_Neg();
+		vTaskDelay(pdMS_TO_TICKS(150));
 	}
 }
 

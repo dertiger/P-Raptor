@@ -19,6 +19,8 @@ void RTOS_Deinit(void);
 
 static void BlingTask (void *);
 
+static void Busy (void *);
+
 #endif /* PL_CONFIG_HAS_RTOS */
 
 #endif /* RTOS_H_ */

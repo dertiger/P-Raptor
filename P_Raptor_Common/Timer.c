@@ -31,6 +31,7 @@ void TMR_OnInterrupt(void) {
 	  cntr=0;
   }
   TRG_AddTick();
+  TMOUT1_AddTick();
 }
 
 void TMR_Init(void) {
