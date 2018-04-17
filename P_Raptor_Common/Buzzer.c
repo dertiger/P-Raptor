@@ -32,6 +32,7 @@ static const BUZ_Tune MelodyWelcome[] =
 { /* freq, ms */
     {300,500},
     {500,200},
+#if 0
     {300,100},
     {200,300},
     {500,400},
@@ -65,6 +66,7 @@ static const BUZ_Tune MelodyWelcome[] =
     {0,100},
     {500,600},
     {0,100},
+#endif
 };
 
 static const BUZ_Tune MelodyButton[] =

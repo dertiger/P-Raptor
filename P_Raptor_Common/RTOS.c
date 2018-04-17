@@ -13,6 +13,7 @@
 
 void RTOS_Init(void) {
  /*! \todo Create tasks here */
+#if 0
 	xTaskHandle taskHndl;
 	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
@@ -23,12 +24,13 @@ void RTOS_Init(void) {
 	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
+#endif
 }
 
 void RTOS_Deinit(void) {
   /* nothing needed for now */
 }
-
+#if 0
 static void BlingTask (void *pvParameters)
 {
 	TickType_t xLastWakeTime = xTaskGetTickCount();
@@ -45,5 +47,5 @@ static void Busy (void *param)
 		vTaskDelay(pdMS_TO_TICKS(150));
 	}
 }
-
+#endif
 #endif /* PL_CONFIG_HAS_RTOS */
