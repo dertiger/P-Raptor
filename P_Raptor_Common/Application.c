@@ -234,6 +234,7 @@ void APP_Start(void) {
   APP_AdoptToHardware();
 
   vTaskStartScheduler(); /*Does not return*/
+
   for(;;); /*just in case it returns*/
 
   __asm volatile("cpsie i"); /* enable interrupts */

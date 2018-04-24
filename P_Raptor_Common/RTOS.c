@@ -10,11 +10,17 @@
 #include "FRTOS1.h"
 #include "Application.h"
 #include "LED.h";
+#include "Reflectance.h"
+#include "Motor.h"
 
 void RTOS_Init(void) {
  /*! \todo Create tasks here */
+
 #if 0
 	xTaskHandle taskHndl;
+	if(xTaskCreate(ReflectanceTask, "Reflectance", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+		for(;;){}
+	}
 	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
@@ -30,7 +36,18 @@ void RTOS_Init(void) {
 void RTOS_Deinit(void) {
   /* nothing needed for now */
 }
+
 #if 0
+static void ReflectanceTask (void *pvParameters){
+	/*if(REF_GetLineKind()==1){
+		MOT_SetSpeedPercent(MOT_MOTOR_LEFT, 10);
+		MOT_SetSpeedPercent(MOT_MOTOR_RIGHT, 10);
+	}
+	else{
+		MOT_SetSpeedPercent(MOT_MOTOR_LEFT, 0);
+		MOT_SetSpeedPercent(MOT_MOTOR_RIGHT, 0);
+	}*/
+}
 static void BlingTask (void *pvParameters)
 {
 	TickType_t xLastWakeTime = xTaskGetTickCount();

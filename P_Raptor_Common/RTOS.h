@@ -21,6 +21,8 @@ static void BlingTask (void *);
 
 static void Busy (void *);
 
+static void ReflectanceTask (void *);
+
 #endif /* PL_CONFIG_HAS_RTOS */
 
 #endif /* RTOS_H_ */

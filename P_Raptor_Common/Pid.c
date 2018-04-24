@@ -415,8 +415,9 @@ uint8_t PID_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_Std
     res = ParsePidParameter(&config.posRightConfig, cmd+sizeof("pid pos R ")-1, handled, io);
   } else if (UTIL1_strncmp((char*)cmd, (char*)"pid fw ", sizeof("pid fw ")-1)==0) {
     res = ParsePidParameter(&config.lineFwConfig, cmd+sizeof("pid fw ")-1, handled, io);
-#if PL_CONFIG_HAS_CONFIG_NVM
-  } else if (UTIL1_strcmp((char*)cmd, (char*)"pid store")==0) {
+  }
+  #if PL_CONFIG_HAS_CONFIG_NVM
+   else if (UTIL1_strcmp((char*)cmd, (char*)"pid store")==0) {
     *handled = TRUE;
     res = PID_StoreSettingsToFlash();
     if (res!=ERR_OK) {
