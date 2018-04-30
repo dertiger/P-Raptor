@@ -60,14 +60,21 @@ static void BlingTask (void *pvParameters)
 #endif
 static void Busy (void *param)
 {
+	int counter = 0;
 	for(;;){
-		EVNT_HandleEvent(APP_EventHandler,TRUE);
+		TACHO_Sample();
+		counter++;
+		if(counter>=10){
+			TACHO_CalcSpeed();
+			counter = 0;
+		}
+		//EVNT_HandleEvent(APP_EventHandler,TRUE);
 		//KEY_Scan();
 		/*if(REF_GetLineKind() != REF_LINE_STRAIGHT){
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 		}*/
-		KEYDBNC_Process();
+		//KEYDBNC_Process();
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
