@@ -206,6 +206,8 @@ void FRTOS1_vApplicationMallocFailedHook(void)
 */
 void QuadInt_OnInterrupt(void)
 {
+	Q4CLeft_Sample();
+	Q4CRight_Sample();
   /* Write your code here ... */
 }
 
