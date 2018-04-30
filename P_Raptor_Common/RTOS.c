@@ -15,9 +15,9 @@
 
 void RTOS_Init(void) {
  /*! \todo Create tasks here */
-
-#if 0
 	xTaskHandle taskHndl;
+#if 0
+
 	if(xTaskCreate(ReflectanceTask, "Reflectance", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}
 	}
@@ -27,10 +27,11 @@ void RTOS_Init(void) {
 	if(xTaskCreate(BlingTask, "Blingy2", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
+#endif
 	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
-#endif
+
 }
 
 void RTOS_Deinit(void) {
@@ -56,13 +57,19 @@ static void BlingTask (void *pvParameters)
 		vTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
 	}
 }
-
+#endif
 static void Busy (void *param)
 {
 	for(;;){
-		LED1_Neg();
-		vTaskDelay(pdMS_TO_TICKS(150));
+		EVNT_HandleEvent(APP_EventHandler,TRUE);
+		//KEY_Scan();
+		if(REF_GetLineKind() != REF_LINE_STRAIGHT){
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
+		}
+		KEYDBNC_Process();
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
-#endif
+
 #endif /* PL_CONFIG_HAS_RTOS */

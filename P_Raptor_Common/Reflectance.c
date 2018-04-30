@@ -23,7 +23,6 @@
 #include "Application.h"
 #include "Event.h"
 #include "Shell.h"
-#include "Motor.h"
 #if PL_CONFIG_HAS_BUZZER
   #include "Buzzer.h"
 #endif
@@ -168,7 +167,7 @@ static void REF_MeasureRaw(SensorTimeType raw[REF_NOF_SENSORS]) {
         cnt++;
       }
     }
-  } while(cnt!=REF_NOF_SENSORS);
+  } while(cnt!=REF_NOF_SENSORS && timerVal < 0xF000);
   taskEXIT_CRITICAL();
   LED_IR_Off(); /* IR LED's off */
 }
@@ -178,12 +177,14 @@ static void REF_CalibrateMinMax(SensorTimeType min[REF_NOF_SENSORS], SensorTimeT
   
   REF_MeasureRaw(raw);
   for(i=0;i<REF_NOF_SENSORS;i++) {
-    if (raw[i] < min[i]) {
-      min[i] = raw[i];
-    }
-    if (raw[i]> max[i]) {
-      max[i] = raw[i];
-    }
+		if(raw[i] != MAX_SENSOR_VALUE){
+		if (raw[i] < min[i]) {
+		  min[i] = raw[i];
+		}
+		if (raw[i]> max[i]) {
+		  max[i] = raw[i];
+		}
+	}
   }
 }
 
@@ -577,14 +578,6 @@ static void ReflTask (void *pvParameters) {
   (void)pvParameters; /* not used */
   for(;;) {
     REF_StateMachine();
-    if(REF_GetLineKind()==1){
-		MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 10);
-		MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 10);
-	}
-	else{
-		MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
-		MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
-	}
     FRTOS1_vTaskDelay(10/portTICK_PERIOD_MS);
   }
 }

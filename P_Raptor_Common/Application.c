@@ -93,10 +93,17 @@ void APP_EventHandler(EVNT_Handle event) {
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
-	  BtnMsg(1, "pressed");
+	  if(REF_GetLineKind() == REF_LINE_STRAIGHT){
+		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 10);
+		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 10);
+	  }
+	  else{
+		  SHELL_SendString("First Place the Robo on a Line");
+	  }
 	  break;
   case EVNT_SW1_LPRESSED:
   	  BtnMsg(1, "Long pressed");
+  	  REF_CalibrateStartStop();
   	  break;
 case EVNT_SW1_RELEASED:
   	  BtnMsg(1, "release");
@@ -242,6 +249,10 @@ void APP_Start(void) {
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
 	  //KEY_Scan();
+		if(REF_GetLineKind() != REF_LINE_STRAIGHT){
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
+			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
+		}
 	  KEYDBNC_Process();
   }
 
