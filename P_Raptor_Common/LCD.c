@@ -45,7 +45,7 @@ typedef enum {
     LCD_MENU_ID_TETRIS,
     LCD_MENU_ID_PONG,
 #endif
-#if 1
+#if PL_CONFIG_HAS_RADIO
   LCD_MENU_ID_ROBOT,
     LCD_MENU_ID_SUMO_START,
     LCD_MENU_ID_SUMO_STOP,
@@ -255,7 +255,7 @@ static const LCDMenu_MenuItem menus[] =
       {LCD_MENU_ID_TETRIS,                    2,   1,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 "Tetris",     GamesMenuHandler,             LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_PONG,                      2,   2,   LCD_MENU_ID_MAIN,         LCD_MENU_ID_NONE,                 "Pong",       GamesMenuHandler,             LCDMENU_MENU_FLAGS_NONE},
 #endif
-#if 1
+#if PL_CONFIG_HAS_RADIO
     {LCD_MENU_ID_ROBOT,                       0,   2,   LCD_MENU_ID_NONE,         LCD_MENU_ID_SUMO_START,           "Robot",        NULL,                       LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_SUMO_START,                4,   0,   LCD_MENU_ID_ROBOT,        LCD_MENU_ID_NONE,                 "Start",        RobotRemoteMenuHandler,     LCDMENU_MENU_FLAGS_NONE},
       {LCD_MENU_ID_SUMO_STOP,                 4,   1,   LCD_MENU_ID_ROBOT,        LCD_MENU_ID_NONE,                 "Stop",         RobotRemoteMenuHandler,     LCDMENU_MENU_FLAGS_NONE},
@@ -420,23 +420,23 @@ static void LCD_Task(void *param) {
         }
         if (event==LCD_BTN_LEFT) {
           LCDMenu_OnEvent(LCDMENU_EVENT_LEFT, NULL);
-          //      ShowTextOnLCD("left");
+          ShowTextOnLCD("left");
         }
         if (event==LCD_BTN_RIGHT) {
           LCDMenu_OnEvent(LCDMENU_EVENT_RIGHT, NULL);
-          //      ShowTextOnLCD("right");
+          ShowTextOnLCD("right");
         }
         if (event==LCD_BTN_UP) {
           LCDMenu_OnEvent(LCDMENU_EVENT_UP, NULL);
-          //      ShowTextOnLCD("up");
+          ShowTextOnLCD("up");
         }
         if (event==LCD_BTN_DOWN) {
           LCDMenu_OnEvent(LCDMENU_EVENT_DOWN, NULL);
-          //      ShowTextOnLCD("down");
+          ShowTextOnLCD("down");
         }
         if (event==LCD_BTN_CENTER) {
           LCDMenu_OnEvent(LCDMENU_EVENT_ENTER, NULL);
-          //      ShowTextOnLCD("center");
+          ShowTextOnLCD("center");
         }
       }
     }

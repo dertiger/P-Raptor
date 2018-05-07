@@ -60,8 +60,10 @@ static void BlingTask (void *pvParameters)
 #endif
 static void Busy (void *param)
 {
+
 	int counter = 0;
 	for(;;){
+	#if !PL_CONFIG_BOARD_IS_REMOTE
 		TACHO_Sample();
 		counter++;
 		if(counter>=10){
@@ -75,6 +77,7 @@ static void Busy (void *param)
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 		}*/
 		//KEYDBNC_Process();
+#endif
 		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }

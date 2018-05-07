@@ -53,6 +53,12 @@
   #include "Reflectance.h"
 #endif
 #include "Sumo.h"
+#if PL_CONFIG_HAS_MOTOR_TACHO
+  #include "Tacho.h"
+#endif
+#if PL_CONFIG_HAS_LCD
+  #include "Lcd.h"
+#endif
 
 #if PL_CONFIG_HAS_EVENTS
 
@@ -93,6 +99,7 @@ void APP_EventHandler(EVNT_Handle event) {
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
+#if PL_CONFIG_HAS_MOTOR
 	  if(REF_GetLineKind() == REF_LINE_STRAIGHT){
 		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 10);
 		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 10);
@@ -100,13 +107,28 @@ void APP_EventHandler(EVNT_Handle event) {
 	  else{
 		  SHELL_SendString("First Place the Robo on a Line");
 	  }
+#endif
+	  BtnMsg(1, "short pressed");
+#if PL_CONFIG_HAS_LCD
+	  PDC1_Clear();
+	  LCD_SetEvent(LCD_BTN_RIGHT);
+#endif
+
 	  break;
   case EVNT_SW1_LPRESSED:
   	  BtnMsg(1, "Long pressed");
+#if PL_CONFIG_HAS_LCD
+  	LCD_SetEvent(LCD_BTN_RIGHT);
+#endif
+#if !PL_CONFIG_BOARD_IS_REMOTE
   	  REF_CalibrateStartStop();
+#endif
   	  break;
 case EVNT_SW1_RELEASED:
   	  BtnMsg(1, "release");
+#if PL_CONFIG_HAS_LCD
+  	  ShowTextOnLCD("B1 released");
+#endif
   	  break;
 #if PL_CONFIG_HAS_BUZZER
 	  BUZ_PlayTune(BUZ_TUNE_WELCOME);
@@ -117,9 +139,15 @@ case EVNT_SW1_RELEASED:
 #if PL_CONFIG_NOF_KEYS>=2
   case EVNT_SW2_PRESSED:
 	  BtnMsg(2, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_LEFT);
+#endif
 	  break;
   case EVNT_SW2_LPRESSED:
 	  BtnMsg(2, "Long pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_LEFT);
+#endif
 	  break;
   case EVNT_SW2_RELEASED:
 	  BtnMsg(2, "release");
@@ -128,26 +156,41 @@ case EVNT_SW1_RELEASED:
 #if PL_CONFIG_NOF_KEYS>=3
   case EVNT_SW3_PRESSED:
 	  BtnMsg(3, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_DOWN);
+#endif
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=4
   case EVNT_SW4_PRESSED:
 	  BtnMsg(4, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_CENTER);
+#endif
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=5
   case EVNT_SW5_PRESSED:
 	  BtnMsg(5, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_UP);
+#endif
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=6
   case EVNT_SW6_PRESSED:
 	  BtnMsg(6, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_DOWN);
+#endif
 	  break;
 #endif
 #if PL_CONFIG_NOF_KEYS>=7
   case EVNT_SW7_PRESSED:
 	  BtnMsg(7, "pressed");
+#if PL_CONFIG_HAS_LCD
+	  LCD_SetEvent(LCD_BTN_UP);
+#endif
 	  break;
 #endif
 
@@ -167,6 +210,7 @@ static const KIN1_UID RoboIDs[] = {
   /* 5: L5, V2 */  {{0x00,0x38,0x00,0x00,0x67,0xCD,0xB5,0x41,0x4E,0x45,0x32,0x15,0x30,0x02,0x00,0x13}},
   /* 6: L3, V1 */  {{0x00,0x33,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x4E,0x45,0x27,0x99,0x10,0x02,0x00,0x0A}},
   /* 7: L1, V1 */  {{0x00,0x19,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x4E,0x45,0x27,0x99,0x10,0x02,0x00,0x25}},
+  /* 8: L7, V1 */  {{0x00,0x20,0xFF,0xFF,0xFF,0xFF,0xFF,0xFF,0x4E,0x45,0x27,0x99,0x10,0x02,0x00,0x07}},
 };
 #endif
 
@@ -191,7 +235,7 @@ static void APP_AdoptToHardware(void) {
     MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE); /* revert left motor */
 #if PL_CONFIG_HAS_QUADRATURE
     (void)Q4CLeft_SwapPins(TRUE);
-    (void)Q4CRight_SwapPins(TRUE);
+    (void)Q4CRight_SwapPins(FALSE);
 #endif
   } else if (KIN1_UIDSame(&id, &RoboIDs[3])) { /* L23 */
 #if PL_CONFIG_HAS_QUADRATURE
@@ -247,13 +291,19 @@ void APP_Start(void) {
   __asm volatile("cpsie i"); /* enable interrupts */
 
   for(;;){
-	  EVNT_HandleEvent(APP_EventHandler,TRUE);
-	  //KEY_Scan();
-		if(REF_GetLineKind() != REF_LINE_STRAIGHT){
+	  KEY_Scan();
+	  //EVNT_HandleEvent(APP_EventHandler,TRUE);
+	  while(EVNT_HandleEvent(APP_EventHandler, TRUE)) {};
+
+#if PL_CONFIG_HAS_MOTOR
+	    if(REF_GetLineKind() != REF_LINE_STRAIGHT){
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 		}
+	    TACHO_CalcSpeed();
+#endif
 	  KEYDBNC_Process();
+	  vTaskDelay(pdMS_TO_TICKS(20));
   }
 
   for(;;) {
