@@ -78,7 +78,7 @@ static void Busy (void *param)
 		}*/
 		//KEYDBNC_Process();
 #endif
-		vTaskDelay(pdMS_TO_TICKS(10));
+		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
 
