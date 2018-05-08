@@ -29,9 +29,8 @@ void RTOS_Init(void) {
 	}
 #endif
 	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
-		for(;;){}	// ERROR handling for tasks to be implemented
-	}
-
+			for(;;){}	// ERROR handling for tasks to be implemented
+		}
 }
 
 void RTOS_Deinit(void) {
@@ -75,7 +74,8 @@ static void Busy (void *param)
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 		}*/
 		//KEYDBNC_Process();
-		vTaskDelay(pdMS_TO_TICKS(10));
+
+		vTaskDelay(pdMS_TO_TICKS(1));
 	}
 }
 

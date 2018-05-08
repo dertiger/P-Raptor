@@ -430,7 +430,7 @@ uint8_t PID_ParseCommand(const unsigned char *cmd, bool *handled, const CLS1_Std
       CLS1_SendStr((unsigned char*)"Loading from FLASH failed!\r\n", io->stdErr);
     }
   }
-#endif
+  #endif
   return res;
 }
 #endif /* PL_HAS_SHELL */
