@@ -235,10 +235,12 @@ static void APP_AdoptToHardware(void) {
 
 void APP_Start(void) {
 
-	int cntr=0;
+  int cntr=0;
 
   PL_Init();
   APP_AdoptToHardware();
+
+  MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE);
 
   vTaskStartScheduler(); /*Does not return*/
 

@@ -9,7 +9,7 @@
 #include "RTOS.h"
 #include "FRTOS1.h"
 #include "Application.h"
-#include "LED.h";
+#include "LED.h"
 #include "Reflectance.h"
 #include "Motor.h"
 
@@ -27,10 +27,10 @@ void RTOS_Init(void) {
 	if(xTaskCreate(BlingTask, "Blingy2", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
-#endif
 	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 			for(;;){}	// ERROR handling for tasks to be implemented
 		}
+#endif
 }
 
 void RTOS_Deinit(void) {
@@ -56,7 +56,6 @@ static void BlingTask (void *pvParameters)
 		vTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
 	}
 }
-#endif
 static void Busy (void *param)
 {
 	int counter = 0;
@@ -75,8 +74,9 @@ static void Busy (void *param)
 		}*/
 		//KEYDBNC_Process();
 
-		vTaskDelay(pdMS_TO_TICKS(1));
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
 }
+#endif
 
 #endif /* PL_CONFIG_HAS_RTOS */
