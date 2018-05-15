@@ -80,30 +80,17 @@ static void BtnMsg(int btn, const char *msg) {
 void APP_EventHandler(EVNT_Handle event) {
   switch(event) {
   case EVNT_STARTUP:
-    {
-      int i;
-      for (i=0;i<5;i++) {
-        LED1_Neg();
-        WAIT1_Waitms(50);
-      }
-      LED1_Off();
-    }
+
   case EVNT_LED_HEARTBEAT:
     //LED1_Neg();
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
-	  if(REF_GetLineKind() == REF_LINE_STRAIGHT){
-		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 10);
-		  MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 10);
-	  }
-	  else{
-		  SHELL_SendString("First Place the Robo on a Line");
-	  }
+  	  REF_CalibrateStartStop();
+	  //LF_StartStopFollowing();
 	  break;
   case EVNT_SW1_LPRESSED:
   	  BtnMsg(1, "Long pressed");
-  	  REF_CalibrateStartStop();
   	  break;
 case EVNT_SW1_RELEASED:
   	  BtnMsg(1, "release");
@@ -241,6 +228,8 @@ void APP_Start(void) {
   APP_AdoptToHardware();
 
   MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE);
+
+
 
   vTaskStartScheduler(); /*Does not return*/
 

@@ -23,6 +23,8 @@ static void Busy (void *);
 
 static void ReflectanceTask (void *);
 
+static void KeyHandler(void *);
+
 #endif /* PL_CONFIG_HAS_RTOS */
 
 #endif /* RTOS_H_ */

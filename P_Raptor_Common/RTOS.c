@@ -21,16 +21,22 @@ void RTOS_Init(void) {
 	if(xTaskCreate(ReflectanceTask, "Reflectance", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}
 	}
-	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
-		for(;;){}	// ERROR handling for tasks to be implemented
-	}
+
 	if(xTaskCreate(BlingTask, "Blingy2", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
 	if(xTaskCreate(Busy, "Busy", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 			for(;;){}	// ERROR handling for tasks to be implemented
 		}
-#endif
+
+	if(xTaskCreate(KeyHandler, "KeyHandler", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+				for(;;){}	// ERROR handling for tasks to be implemented
+			}
+
+	#endif
+	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+			for(;;){}	// ERROR handling for tasks to be implemented
+		}
 }
 
 void RTOS_Deinit(void) {
@@ -48,14 +54,7 @@ static void ReflectanceTask (void *pvParameters){
 		MOT_SetSpeedPercent(MOT_MOTOR_RIGHT, 0);
 	}*/
 }
-static void BlingTask (void *pvParameters)
-{
-	TickType_t xLastWakeTime = xTaskGetTickCount();
-	for(;;){
-		LED1_Neg();
-		vTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
-	}
-}
+
 static void Busy (void *param)
 {
 	int counter = 0;
@@ -78,5 +77,25 @@ static void Busy (void *param)
 	}
 }
 #endif
+
+static void BlingTask (void *pvParameters)
+{
+	TickType_t xLastWakeTime = xTaskGetTickCount();
+	for(;;){
+		//LED1_Neg();
+		EVNT_HandleEvent(APP_EventHandler,TRUE);
+		//KEY_Scan();
+		KEYDBNC_Process();
+		vTaskDelayUntil(&xLastWakeTime, 100/portTICK_PERIOD_MS);
+	}
+}
+
+static void KeyHandler(void *param)
+{
+	  EVNT_HandleEvent(APP_EventHandler,TRUE);
+	  //KEY_Scan();
+	  KEYDBNC_Process();
+	  vTaskDelay(pdMS_TO_TICKS(5));
+}
 
 #endif /* PL_CONFIG_HAS_RTOS */

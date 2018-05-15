@@ -460,7 +460,7 @@ void PID_Init(void) {
   config.speedLeftConfig.iFactor100 = 100;
   config.speedLeftConfig.dFactor100 = 0;
   config.speedLeftConfig.iAntiWindup = 50000;
-  config.speedLeftConfig.maxSpeedPercent = 0;
+  config.speedLeftConfig.maxSpeedPercent = 20;
   config.speedLeftConfig.lastError = 0;
   config.speedLeftConfig.integral = 0;
 
@@ -471,19 +471,19 @@ void PID_Init(void) {
   config.speedRightConfig.lastError = 0;
   config.speedRightConfig.integral = 0;
 
-  config.lineFwConfig.pFactor100 = 0;
-  config.lineFwConfig.iFactor100 = 0;
+  config.lineFwConfig.pFactor100 = 2000;
+  config.lineFwConfig.iFactor100 = 100;
   config.lineFwConfig.dFactor100 = 0;
-  config.lineFwConfig.iAntiWindup = 0;
-  config.lineFwConfig.maxSpeedPercent = 0;
+  config.lineFwConfig.iAntiWindup = 50000;
+  config.lineFwConfig.maxSpeedPercent = 20;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 
-  config.posLeftConfig.pFactor100 = 0;
+  config.posLeftConfig.pFactor100 = 20;
   config.posLeftConfig.iFactor100 = 0;
   config.posLeftConfig.dFactor100 = 0;
-  config.posLeftConfig.iAntiWindup = 0;
-  config.posLeftConfig.maxSpeedPercent = 0;
+  config.posLeftConfig.iAntiWindup = 50000;
+  config.posLeftConfig.maxSpeedPercent = 20;
   config.posLeftConfig.lastError = 0;
   config.posLeftConfig.integral = 0;
   config.posRightConfig.pFactor100 = config.posLeftConfig.pFactor100;
