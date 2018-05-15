@@ -102,14 +102,34 @@ static void StateMachine(void) {
     case STATE_TURN:
       lineKind = REF_GetLineKind();
       if (lineKind==REF_LINE_FULL) {
-        LF_currState = STATE_FINISHED;
-      } if (lineKind==REF_LINE_NONE) {
-        TURN_Turn(TURN_LEFT180, NULL);
-        DRV_SetMode(DRV_MODE_NONE); /* disable position mode */
-        LF_currState = STATE_FOLLOW_SEGMENT;
-      } else {
+		TURN_Turn(TURN_LEFT180, NULL);
+		DRV_SetMode(DRV_MODE_NONE);
+      }
+      else if (lineKind == REF_LINE_LEFT){
+    	  while(lineKind == REF_LINE_LEFT){
+    		  TURN_Turn(TURN_LEFT10, NULL);
+    	      lineKind = REF_GetLineKind();
+    	  }
+		DRV_SetMode(DRV_MODE_NONE);
+      }
+      else if (lineKind==REF_LINE_RIGHT){
+		while(lineKind == REF_LINE_LEFT){
+			TURN_Turn(TURN_RIGHT10, NULL);
+			lineKind = REF_GetLineKind();
+		}
+		DRV_SetMode(DRV_MODE_NONE);
+      }
+      else if (lineKind==REF_LINE_NONE) {
+		  LF_currState = STATE_FINISHED;
+      }
+      else {
         LF_currState = STATE_STOP;
       }
+
+      if (lineKind==REF_LINE_STRAIGHT){
+		LF_currState = STATE_FOLLOW_SEGMENT;
+      }
+
       break;
 
     case STATE_FINISHED:

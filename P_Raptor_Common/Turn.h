@@ -13,8 +13,10 @@
 #if PL_CONFIG_HAS_TURN
 
 typedef enum {
+TURN_LEFT10,
   TURN_LEFT45,   /* turn 45 degree left and stop */
   TURN_LEFT90,   /* turn 90 degree left and stop */
+TURN_RIGHT10,
   TURN_RIGHT45, /* turn 90 degree right and stop */
   TURN_RIGHT90, /* turn 90 degree right and stop */
   TURN_LEFT180, /* turn 180 degree counterclockwise and stop */

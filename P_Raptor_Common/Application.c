@@ -86,8 +86,8 @@ void APP_EventHandler(EVNT_Handle event) {
     break;
 #if PL_CONFIG_NOF_KEYS>=1
   case EVNT_SW1_PRESSED:
-  	  REF_CalibrateStartStop();
-	  //LF_StartStopFollowing();
+  	  //REF_CalibrateStartStop();
+	  LF_StartStopFollowing();
 	  break;
   case EVNT_SW1_LPRESSED:
   	  BtnMsg(1, "Long pressed");
