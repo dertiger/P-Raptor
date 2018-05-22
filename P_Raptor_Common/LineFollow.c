@@ -37,7 +37,8 @@ typedef enum {
   STATE_FOLLOW_SEGMENT,    /* line following segment, going forward */
   STATE_TURN,              /* reached an intersection, turning around */
   STATE_FINISHED,          /* reached finish area */
-  STATE_STOP               /* stop the engines */
+  STATE_STOP,               /* stop the engines */
+  STATE_TURN_LITTLE
 } StateType;
 
 /* task notification bits */
@@ -102,32 +103,18 @@ static void StateMachine(void) {
     case STATE_TURN:
       lineKind = REF_GetLineKind();
       if (lineKind==REF_LINE_FULL) {
+    	  SHELL_SendString("Full Line detected");
 		TURN_Turn(TURN_LEFT180, NULL);
 		DRV_SetMode(DRV_MODE_NONE);
-      }
-      else if (lineKind == REF_LINE_LEFT){
-    	  while(lineKind == REF_LINE_LEFT){
-    		  TURN_Turn(TURN_LEFT10, NULL);
-    	      lineKind = REF_GetLineKind();
-    	  }
-		DRV_SetMode(DRV_MODE_NONE);
-      }
-      else if (lineKind==REF_LINE_RIGHT){
-		while(lineKind == REF_LINE_LEFT){
-			TURN_Turn(TURN_RIGHT10, NULL);
-			lineKind = REF_GetLineKind();
-		}
-		DRV_SetMode(DRV_MODE_NONE);
+		LF_currState = STATE_FOLLOW_SEGMENT;
       }
       else if (lineKind==REF_LINE_NONE) {
 		  LF_currState = STATE_FINISHED;
+		  SHELL_SendString("No line");
       }
       else {
-        LF_currState = STATE_STOP;
-      }
-
-      if (lineKind==REF_LINE_STRAIGHT){
-		LF_currState = STATE_FOLLOW_SEGMENT;
+        LF_currState = STATE_TURN_LITTLE;
+		SHELL_SendString("other line detected");
       }
 
       break;
@@ -136,6 +123,17 @@ static void StateMachine(void) {
       SHELL_SendString("Finished!\r\n");
       LF_currState = STATE_STOP;
       break;
+
+    case STATE_TURN_LITTLE:
+    	if(lineKind==REF_LINE_LEFT){
+    		TURN_TurnAngle(-5,NULL);
+    	}
+    	else if(lineKind==REF_LINE_RIGHT){
+    		TURN_TurnAngle(5,NULL);
+    	}
+		DRV_SetMode(DRV_MODE_NONE);
+		LF_currState=STATE_FOLLOW_SEGMENT;
+		break;
 
     case STATE_STOP:
 #if 0
@@ -170,7 +168,7 @@ static void LineTask (void *pvParameters) {
       LF_currState = STATE_STOP;
     }
     StateMachine();
-    FRTOS1_vTaskDelay(5/portTICK_PERIOD_MS);
+    FRTOS1_vTaskDelay(3/portTICK_PERIOD_MS);
   }
 }
 
@@ -229,7 +227,7 @@ void LF_Deinit(void) {
 
 void LF_Init(void) {
   LF_currState = STATE_IDLE;
-  if (xTaskCreate(LineTask, "Line", 400/sizeof(StackType_t), NULL, tskIDLE_PRIORITY, &LFTaskHandle) != pdPASS) {
+  if (xTaskCreate(LineTask, "Line", 600/sizeof(StackType_t), NULL, tskIDLE_PRIORITY+2, &LFTaskHandle) != pdPASS) {
     for(;;){} /* error */
   }
 }

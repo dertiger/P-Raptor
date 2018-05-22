@@ -227,8 +227,10 @@ void APP_Start(void) {
   PL_Init();
   APP_AdoptToHardware();
 
-  MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE);
 
+#if PL_CONFIG_HAS_MOTOR
+  MOT_Invert(MOT_GetMotorHandle(MOT_MOTOR_LEFT), TRUE);
+#endif
 
 
   vTaskStartScheduler(); /*Does not return*/
@@ -240,10 +242,12 @@ void APP_Start(void) {
   for(;;){
 	  EVNT_HandleEvent(APP_EventHandler,TRUE);
 	  //KEY_Scan();
+#if PL_CONFIG_HAS_MOTOR
 		if(REF_GetLineKind() != REF_LINE_STRAIGHT){
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_LEFT), 0);
 			MOT_SetSpeedPercent(MOT_GetMotorHandle(MOT_MOTOR_RIGHT), 0);
 		}
+#endif
 	  KEYDBNC_Process();
   }
 

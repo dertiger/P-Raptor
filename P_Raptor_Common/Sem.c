@@ -56,7 +56,7 @@ static void vMasterTask(void *pvParameters) {
 		for(;;){}
 	}
 	vQueueAddToRegistry(sem, "IPC_Sem");
-	if(xTaskCreate(vSlaveTask, "Slave", 400/sizeof(StackType_t), sem, tskIDLE_PRIORITY+1, NULL)!=pdPASS){
+	if(xTaskCreate(vSlaveTask, "Slave", 600/sizeof(StackType_t), sem, tskIDLE_PRIORITY+1, NULL)!=pdPASS){
 		CLS1_SendStr("Not enough memory for slave",CLS1_GetStdio()->stdErr);
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
@@ -73,7 +73,7 @@ void SEM_Deinit(void) {
 
 /*! \brief Initializes module */
 void SEM_Init(void) {
-	if(xTaskCreate(vMasterTask, "Master", 400/sizeof(StackType_t), (void*) NULL, tskIDLE_PRIORITY+1, &taskHndl)!=pdPASS){
+	if(xTaskCreate(vMasterTask, "Master", 600/sizeof(StackType_t), (void*) NULL, tskIDLE_PRIORITY+1, &taskHndl)!=pdPASS){
 		for(;;){}	// ERROR handling for tasks to be implemented
 	}
 

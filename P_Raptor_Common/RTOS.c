@@ -34,7 +34,7 @@ void RTOS_Init(void) {
 			}
 
 	#endif
-	if(xTaskCreate(BlingTask, "Blingy1", configMINIMAL_STACK_SIZE, (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
+	if(xTaskCreate(BlingTask, "Tastendruck", 600/sizeof(StackType_t), (void*) NULL, tskIDLE_PRIORITY, &taskHndl)!=pdPASS){
 			for(;;){}	// ERROR handling for tasks to be implemented
 		}
 }

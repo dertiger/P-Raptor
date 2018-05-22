@@ -25,6 +25,7 @@ typedef struct {
 } PIDConfig_t;
 
 static PIDConfig_t config;
+uint8_t errorPercent;
 
 uint8_t PID_GetPIDConfig(PID_ConfigType type, PID_Config **confP) {
   switch(type) {
@@ -122,14 +123,12 @@ static uint8_t errorWithinPercent(int32_t error) {
 
 static void PID_LineCfg(uint16_t currLine, uint16_t setLine, PID_Config *config) {
   int32_t pid, speed, speedL, speedR;
-  uint8_t errorPercent;
   MOT_Direction directionL=MOT_DIR_FORWARD, directionR=MOT_DIR_FORWARD;
 
   pid = PID(currLine, setLine, config);
   errorPercent = errorWithinPercent(currLine-setLine);
-
   /* transform into different speed for motors. The PID is used as difference value to the motor PWM */
-  if (errorPercent <= 20) { /* pretty on center: move forward both motors with base speed */
+  if (errorPercent <= 15) { /* pretty on center: move forward both motors with base speed */
     speed = ((int32_t)config->maxSpeedPercent)*(0xffff/100); /* 100% */
     pid = Limit(pid, -speed, speed);
     if (pid<0) { /* turn right */
@@ -139,7 +138,7 @@ static void PID_LineCfg(uint16_t currLine, uint16_t setLine, PID_Config *config)
       speedR = speed+pid;
       speedL = speed;
     }
-  } else if (errorPercent <= 40) {
+  } else if (errorPercent <= 22) {
     /* outside left/right halve position from center, slow down one motor and speed up the other */
     speed = ((int32_t)config->maxSpeedPercent)*(0xffff/100)*8/10; /* 80% */
     pid = Limit(pid, -speed, speed);
@@ -150,7 +149,7 @@ static void PID_LineCfg(uint16_t currLine, uint16_t setLine, PID_Config *config)
       speedR = speed+pid; /* increase speed */
       speedL = speed-pid; /* decrease speed */
     }
-  } else if (errorPercent <= 70) {
+  } else if (errorPercent <= 30) {
     speed = ((int32_t)config->maxSpeedPercent)*(0xffff/100)*6/10; /* %60 */
     pid = Limit(pid, -speed, speed);
     if (pid<0) { /* turn right */
@@ -471,8 +470,8 @@ void PID_Init(void) {
   config.speedRightConfig.lastError = 0;
   config.speedRightConfig.integral = 0;
 
-  config.lineFwConfig.pFactor100 = 2000;
-  config.lineFwConfig.iFactor100 = 100;
+  config.lineFwConfig.pFactor100 = 5000;
+  config.lineFwConfig.iFactor100 = 0;
   config.lineFwConfig.dFactor100 = 0;
   config.lineFwConfig.iAntiWindup = 50000;
   config.lineFwConfig.maxSpeedPercent = 20;
@@ -483,7 +482,7 @@ void PID_Init(void) {
   config.posLeftConfig.iFactor100 = 0;
   config.posLeftConfig.dFactor100 = 0;
   config.posLeftConfig.iAntiWindup = 50000;
-  config.posLeftConfig.maxSpeedPercent = 20;
+  config.posLeftConfig.maxSpeedPercent = 40;
   config.posLeftConfig.lastError = 0;
   config.posLeftConfig.integral = 0;
   config.posRightConfig.pFactor100 = config.posLeftConfig.pFactor100;
