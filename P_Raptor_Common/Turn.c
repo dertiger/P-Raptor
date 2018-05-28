@@ -33,9 +33,9 @@
 #define TURN_STEPS_90         700
 #endif
   /*!< number of steps for a 90 degree turn */
-#define TURN_STEPS_LINE       100
+#define TURN_STEPS_LINE       90
   /*!< number of steps stepping over the line */
-#define TURN_STEPS_POST_LINE  50
+#define TURN_STEPS_POST_LINE  300
   /*!< number of steps after the line, before making a turn */
 #define TURN_STEPS_90_TIMEOUT_MS        1000
 #define TURN_STEPS_LINE_TIMEOUT_MS      200
@@ -154,7 +154,7 @@ void TURN_Turn(TURN_Kind kind, TURN_StopFct stopIt) {
       StepsTurn(-(3*TURN_StepsLine), -(3*TURN_StepsLine), stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
       break;
     case TURN_STEP_LINE_FW:
-      StepsTurn(TURN_StepsLine, TURN_StepsLine, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
+      StepsTurn(4*TURN_StepsLine, 4*TURN_StepsLine, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
       break;
     case TURN_STEP_LINE_BW:
       StepsTurn(-TURN_StepsLine, -TURN_StepsLine, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);

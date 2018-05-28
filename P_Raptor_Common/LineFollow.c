@@ -27,6 +27,9 @@
 #if PL_CONFIG_HAS_DRIVE
   #include "Drive.h"
 #endif
+#if PL_CONFIG_HAS_LINE_MAZE
+#include "Maze.h"
+#endif
 
 #if 1 /*! \todo */
 #include "RNet_App.h"
@@ -87,6 +90,8 @@ static bool FollowSegment(void) {
 
 static void StateMachine(void) {
   REF_LineKind lineKind;
+  bool finished;
+
 
   switch (LF_currState) {
     case STATE_IDLE:
@@ -101,6 +106,28 @@ static void StateMachine(void) {
       break;
 
     case STATE_TURN:
+		LF_currState = STATE_IDLE;
+    	if(!MAZE_IsSolved()){
+			MAZE_EvaluteTurn(&finished);
+			DRV_SetMode(DRV_MODE_NONE);
+			if(!finished){
+				LF_currState = STATE_FOLLOW_SEGMENT;
+			}
+			else{
+				LF_currState = STATE_FINISHED;
+			}
+    	}
+    	else{
+    		finished = MAZE_DriveLastSolvedTurn();
+    		DRV_SetMode(DRV_MODE_NONE);
+    		if(finished == 1){
+    			LF_currState = STATE_FINISHED;
+    		}
+    		else{
+    			LF_currState = STATE_FOLLOW_SEGMENT;
+    		}
+    	}
+    	/*
       lineKind = REF_GetLineKind();
       if (lineKind==REF_LINE_FULL) {
     	  SHELL_SendString("Full Line detected");
@@ -116,7 +143,7 @@ static void StateMachine(void) {
         LF_currState = STATE_TURN_LITTLE;
 		SHELL_SendString("other line detected");
       }
-
+      */
       break;
 
     case STATE_FINISHED:

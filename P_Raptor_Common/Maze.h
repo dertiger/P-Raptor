@@ -13,6 +13,8 @@
 #include "Turn.h"
 #include "Reflectance.h"
 
+
+bool MAZE_DriveLastSolvedTurn();
 /*!
  * \brief Adds a new path while going forward through the maze
  * \param kind New path to be added

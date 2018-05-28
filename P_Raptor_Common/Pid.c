@@ -470,18 +470,18 @@ void PID_Init(void) {
   config.speedRightConfig.lastError = 0;
   config.speedRightConfig.integral = 0;
 
-  config.lineFwConfig.pFactor100 = 5000;
-  config.lineFwConfig.iFactor100 = 0;
+  config.lineFwConfig.pFactor100 = 2000;
+  config.lineFwConfig.iFactor100 = 100;
   config.lineFwConfig.dFactor100 = 0;
-  config.lineFwConfig.iAntiWindup = 50000;
+  config.lineFwConfig.iAntiWindup = 5000;
   config.lineFwConfig.maxSpeedPercent = 20;
   config.lineFwConfig.lastError = 0;
   config.lineFwConfig.integral = 0;
 
-  config.posLeftConfig.pFactor100 = 20;
-  config.posLeftConfig.iFactor100 = 0;
+  config.posLeftConfig.pFactor100 = 100;
+  config.posLeftConfig.iFactor100 = 5;
   config.posLeftConfig.dFactor100 = 0;
-  config.posLeftConfig.iAntiWindup = 50000;
+  config.posLeftConfig.iAntiWindup = 300;
   config.posLeftConfig.maxSpeedPercent = 40;
   config.posLeftConfig.lastError = 0;
   config.posLeftConfig.integral = 0;
