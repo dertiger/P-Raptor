@@ -106,27 +106,14 @@ static void StateMachine(void) {
       break;
 
     case STATE_TURN:
-		LF_currState = STATE_IDLE;
-    	if(!MAZE_IsSolved()){
-			MAZE_EvaluteTurn(&finished);
-			DRV_SetMode(DRV_MODE_NONE);
-			if(!finished){
-				LF_currState = STATE_FOLLOW_SEGMENT;
-			}
-			else{
-				LF_currState = STATE_FINISHED;
-			}
-    	}
-    	else{
-    		finished = MAZE_DriveLastSolvedTurn();
-    		DRV_SetMode(DRV_MODE_NONE);
-    		if(finished == 1){
-    			LF_currState = STATE_FINISHED;
-    		}
-    		else{
-    			LF_currState = STATE_FOLLOW_SEGMENT;
-    		}
-    	}
+		MAZE_EvaluteTurn(&finished);
+		DRV_SetMode(DRV_MODE_NONE);
+		if(!finished){
+			LF_currState = STATE_FOLLOW_SEGMENT;
+		}
+		else{
+			LF_currState = STATE_FINISHED;
+		}
     	/*
       lineKind = REF_GetLineKind();
       if (lineKind==REF_LINE_FULL) {
