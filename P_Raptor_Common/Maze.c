@@ -19,7 +19,7 @@
 
 #define MAZE_MIN_LINE_VAL      0x40   /* minimum value indicating a line */ /* \todo adapt to your needs */
 static uint16_t SensorHistory[REF_NOF_SENSORS]; /* value of history while moving forward */
-static bool LEFTHAND = FALSE;
+static bool LEFTHAND = TRUE;
 uint8_t pathSelecter = 0;
 
 static void MAZE_SampleSensorHistory(void) {
@@ -175,7 +175,8 @@ void MAZE_SetSolved(void) {
   isSolved = TRUE;
   /*! \todo here the path could be reverted */
   MAZE_RevertPath();
-  MAZE_AddPath(TURN_STOP); /* add an action to stop */
+  MAZE_SimplifyPath();
+  MAZE_AddPath(TURN_FINISHED); /* add an action to stop */
 }
 
 bool MAZE_IsSolved(void) {
@@ -197,7 +198,48 @@ void MAZE_AddPath(TURN_Kind kind) {
  * For example if we have TURN_LEFT90-TURN_RIGHT180-TURN_LEFT90, this can be simplified with TURN_STRAIGHT.
  */
 void MAZE_SimplifyPath(void) {
-  /*! \todo */
+	for(int bla=1;bla<pathLength-1;bla++){
+	      if(path[bla]==TURN_LEFT180){
+	          if((path[bla-1]==TURN_LEFT90 && path[bla+1]==TURN_LEFT90)
+	        		  ||(path[bla-1]==TURN_RIGHT90 && path[bla+1]==TURN_RIGHT90)){
+	              path[bla-1] = TURN_STRAIGHT;
+	              while(bla<pathLength-2){
+	                  path[bla]=path[bla+2];
+	                  bla++;
+	              }
+	              pathLength=bla;
+	              bla=0;
+	          }else if((path[bla-1]==TURN_RIGHT90 && path[bla+1]==TURN_LEFT90)
+	        		  ||(path[bla-1]==TURN_LEFT90 && path[bla+1]==TURN_RIGHT90)
+					  ||(path[bla-1]==TURN_STRAIGHT && path[bla+1]==TURN_STRAIGHT)){
+	              path[bla-1] = TURN_LEFT180;
+	              while(bla<pathLength-2){
+	                    path[bla]=path[bla+2];
+	                    bla++;
+	              }
+	              pathLength=bla;
+	              bla=0;
+	          }else if((path[bla-1]==TURN_RIGHT90 && path[bla+1]==TURN_STRAIGHT)
+	        		  ||(path[bla-1]==TURN_STRAIGHT && path[bla+1]==TURN_RIGHT90)){
+	              path[bla-1] = TURN_LEFT90;
+	              while(bla<pathLength-2){
+	                    path[bla]=path[bla+2];
+	                    bla++;
+	              }
+	              pathLength=bla;
+	              bla=0;
+	          }else if((path[bla-1]==TURN_LEFT90 && path[bla+1]==TURN_STRAIGHT)
+	        		  ||(path[bla-1]==TURN_STRAIGHT && path[bla+1]==TURN_LEFT90)){
+	              path[bla-1] = TURN_RIGHT90;
+	              while(bla<pathLength-2){
+	                    path[bla]=path[bla+2];
+	                    bla++;
+	              }
+	              pathLength=bla;
+	              bla=0;
+	          }
+	      }
+	  }
 }
 
 /*!
@@ -213,6 +255,7 @@ uint8_t MAZE_EvaluteTurn(bool *finished) {
 
   if (currLineKind==REF_LINE_NONE && !MAZE_IsSolved()) { /* nothing, must be dead end */
 	turn = TURN_LEFT180;
+	TURN_Turn(TURN_STEP_BORDER_BW, NULL);
   } else {
 	MAZE_ClearSensorHistory(); /* clear history values */
 	MAZE_SampleSensorHistory(); /* store current values */

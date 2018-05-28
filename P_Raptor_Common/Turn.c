@@ -151,7 +151,7 @@ void TURN_Turn(TURN_Kind kind, TURN_StopFct stopIt) {
       StepsTurn(2*TURN_Steps90, -(2*TURN_Steps90), stopIt, TURN_STEPS_90_TIMEOUT_MS*2);
      break;
     case TURN_STEP_BORDER_BW:
-      StepsTurn(-(3*TURN_StepsLine), -(3*TURN_StepsLine), stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
+      StepsTurn(-TURN_StepsLine/2, -TURN_StepsLine/2, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);
       break;
     case TURN_STEP_LINE_FW:
       StepsTurn(4*TURN_StepsLine, 4*TURN_StepsLine, stopIt, TURN_STEPS_LINE_TIMEOUT_MS);

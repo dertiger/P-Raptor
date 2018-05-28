@@ -106,6 +106,7 @@ static void StateMachine(void) {
       break;
 
     case STATE_TURN:
+    	LF_currState = STATE_IDLE;
 		MAZE_EvaluteTurn(&finished);
 		DRV_SetMode(DRV_MODE_NONE);
 		if(!finished){
