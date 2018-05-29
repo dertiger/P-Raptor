@@ -278,9 +278,7 @@ uint8_t MAZE_EvaluteTurn(bool *finished) {
   } else if (turn==TURN_STEP_BORDER_BW){
 	  MAZE_SetSolved();
 	  TURN_Turn(TURN_STEP_LINE_BW_POST_LINE, NULL);
-	  WAIT1_Waitms(500);
 	  TURN_Turn(TURN_LEFT180, NULL);
-	  WAIT1_Waitms(500);
   }else { /* turn or do something */
 	  MAZE_AddPath(turn);
 	  TURN_Turn(turn, NULL);
